@@ -15,7 +15,9 @@ fun ModuleSettingsSection(
     onIconSourceModeChange: (RuleStore.IconSourceMode) -> Unit,
     onRulesEnabledChange: (Boolean) -> Unit,
     onPanelIconReplacementEnabledChange: (Boolean) -> Unit,
+    onMediaNotificationIconEnabledChange: (Boolean) -> Unit,
     onLockScreenCapsuleIconReplacementEnabledChange: (Boolean) -> Unit,
+    onAodIconReplacementEnabledChange: (Boolean) -> Unit,
     onOplusPushSpecialHandlingEnabledChange: (Boolean) -> Unit,
     onPlaceholderIconEnabledChange: (Boolean) -> Unit,
 ) {
@@ -35,10 +37,22 @@ fun ModuleSettingsSection(
         onCheckedChange = onPanelIconReplacementEnabledChange,
     )
     ToggleComponent(
+        title = stringResource(R.string.label_media_notification_icon_enabled),
+        checked = state.config.mediaNotificationIconEnabled,
+        enabled = canEditConfig && state.config.panelIconReplacementEnabled,
+        onCheckedChange = onMediaNotificationIconEnabledChange,
+    )
+    ToggleComponent(
         title = stringResource(R.string.label_lock_screen_capsule_icon_replacement_enabled),
         checked = state.config.lockScreenCapsuleIconReplacementEnabled,
         enabled = canEditConfig,
         onCheckedChange = onLockScreenCapsuleIconReplacementEnabledChange,
+    )
+    ToggleComponent(
+        title = stringResource(R.string.label_aod_icon_replacement_enabled),
+        checked = state.config.aodIconReplacementEnabled,
+        enabled = canEditConfig,
+        onCheckedChange = onAodIconReplacementEnabledChange,
     )
     if (ruleLibraryMode) {
         ToggleComponent(

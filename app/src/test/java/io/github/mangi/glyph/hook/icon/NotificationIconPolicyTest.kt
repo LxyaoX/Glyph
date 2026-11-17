@@ -104,6 +104,31 @@ class NotificationIconPolicyTest {
     }
 
     @Test
+    fun `media notifications follow their own switch`() {
+        assertTrue(
+            NotificationIconPolicy.shouldProcessPanel(
+                config = config(mediaNotificationEnabled = true),
+                isMediaNotification = true,
+                isOplusPush = false,
+            )
+        )
+        assertFalse(
+            NotificationIconPolicy.shouldProcessPanel(
+                config = config(mediaNotificationEnabled = true, panelEnabled = false),
+                isMediaNotification = true,
+                isOplusPush = false,
+            )
+        )
+        assertFalse(
+            NotificationIconPolicy.shouldProcessPanel(
+                config = config(mediaNotificationEnabled = true, handleOplusPush = false),
+                isMediaNotification = true,
+                isOplusPush = true,
+            )
+        )
+    }
+
+    @Test
     fun `desktop theme is resolved only when rules are enabled`() {
         assertTrue(
             NotificationIconPolicy.shouldResolveTheme(
@@ -311,12 +336,14 @@ class NotificationIconPolicyTest {
         rulesEnabled: Boolean = true,
         source: PolicyIconSource = PolicyIconSource.RuleLibrary,
         panelEnabled: Boolean = true,
+        mediaNotificationEnabled: Boolean = false,
         handleOplusPush: Boolean = true,
         placeholderEnabled: Boolean = false,
     ) = IconPolicyConfig(
         rulesEnabled = rulesEnabled,
         source = source,
         panelEnabled = panelEnabled,
+        mediaNotificationEnabled = mediaNotificationEnabled,
         handleOplusPush = handleOplusPush,
         placeholderEnabled = placeholderEnabled,
     )

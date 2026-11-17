@@ -135,9 +135,10 @@ internal class AodNotificationHooks(
         packageName: String?,
         sbn: StatusBarNotification?,
     ): Icon? {
+        val snapshot = configuration.snapshot
+        if (!snapshot.config.aodIconReplacementEnabled) return null
         StatusBarIconReplacementCache.iconFor(key, packageName)?.let { return it }
         val notification = sbn ?: return null
-        val snapshot = configuration.snapshot
         return try {
             snapshot.resolver.resolveStatusBarIconPlan(
                 context = context,

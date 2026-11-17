@@ -25,9 +25,11 @@ object RuleStore {
         val rulesEnabled: Boolean = true,
         val iconSourceMode: IconSourceMode = IconSourceMode.RuleLibrary,
         val panelIconReplacementEnabled: Boolean = true,
+        val mediaNotificationIconEnabled: Boolean = false,
         val oplusPushSpecialHandlingEnabled: Boolean = true,
         val placeholderIconEnabled: Boolean = false,
         val lockScreenCapsuleIconReplacementEnabled: Boolean = true,
+        val aodIconReplacementEnabled: Boolean = true,
     )
 
     data class MirrorSnapshot(
@@ -69,10 +71,12 @@ object RuleStore {
     const val KEY_RULES_ENABLED = "config.rules_enabled"
     const val KEY_ICON_SOURCE_MODE = "config.icon_source_mode"
     const val KEY_PANEL_ICON_REPLACEMENT_ENABLED = "config.panel_icon_replacement_enabled"
+    const val KEY_MEDIA_NOTIFICATION_ICON_ENABLED = "config.media_notification_icon_enabled"
     const val KEY_OPLUS_PUSH_SPECIAL_HANDLING_ENABLED = "config.oplus_push_special_handling_enabled"
     const val KEY_PLACEHOLDER_ICON_ENABLED = "config.placeholder_icon_enabled"
     const val KEY_LOCK_SCREEN_CAPSULE_ICON_REPLACEMENT_ENABLED =
         "config.lock_screen_capsule_icon_replacement_enabled"
+    const val KEY_AOD_ICON_REPLACEMENT_ENABLED = "config.aod_icon_replacement_enabled"
 
     /** Previous releases used a wall-clock timestamp as a revision. Read for migration only. */
     const val KEY_CONFIG_UPDATED_AT = "config_updated_at"
@@ -291,6 +295,10 @@ object RuleStore {
         putBoolean(KEY_PANEL_ICON_REPLACEMENT_ENABLED, enabled)
     }
 
+    fun setMediaNotificationIconEnabled(enabled: Boolean) = editConfig {
+        putBoolean(KEY_MEDIA_NOTIFICATION_ICON_ENABLED, enabled)
+    }
+
     fun setOplusPushSpecialHandlingEnabled(enabled: Boolean) = editConfig {
         putBoolean(KEY_OPLUS_PUSH_SPECIAL_HANDLING_ENABLED, enabled)
     }
@@ -301,6 +309,10 @@ object RuleStore {
 
     fun setLockScreenCapsuleIconReplacementEnabled(enabled: Boolean) = editConfig {
         putBoolean(KEY_LOCK_SCREEN_CAPSULE_ICON_REPLACEMENT_ENABLED, enabled)
+    }
+
+    fun setAodIconReplacementEnabled(enabled: Boolean) = editConfig {
+        putBoolean(KEY_AOD_ICON_REPLACEMENT_ENABLED, enabled)
     }
 
     fun setRuleEnabled(packageName: String, enabled: Boolean) = editConfig {
@@ -384,12 +396,14 @@ object RuleStore {
         rulesEnabled = values.boolean(KEY_RULES_ENABLED, true),
         iconSourceMode = IconSourceMode.fromPref(values[KEY_ICON_SOURCE_MODE] as? String),
         panelIconReplacementEnabled = values.boolean(KEY_PANEL_ICON_REPLACEMENT_ENABLED, true),
+        mediaNotificationIconEnabled = values.boolean(KEY_MEDIA_NOTIFICATION_ICON_ENABLED, false),
         oplusPushSpecialHandlingEnabled = values.boolean(KEY_OPLUS_PUSH_SPECIAL_HANDLING_ENABLED, true),
         placeholderIconEnabled = values.boolean(KEY_PLACEHOLDER_ICON_ENABLED, false),
         lockScreenCapsuleIconReplacementEnabled = values.boolean(
             KEY_LOCK_SCREEN_CAPSULE_ICON_REPLACEMENT_ENABLED,
             true,
         ),
+        aodIconReplacementEnabled = values.boolean(KEY_AOD_ICON_REPLACEMENT_ENABLED, true),
     )
 
     fun applyRuleOverrides(
@@ -700,9 +714,11 @@ object RuleStore {
         key == KEY_RULES_ENABLED ||
             key == KEY_ICON_SOURCE_MODE ||
             key == KEY_PANEL_ICON_REPLACEMENT_ENABLED ||
+            key == KEY_MEDIA_NOTIFICATION_ICON_ENABLED ||
             key == KEY_OPLUS_PUSH_SPECIAL_HANDLING_ENABLED ||
             key == KEY_PLACEHOLDER_ICON_ENABLED ||
             key == KEY_LOCK_SCREEN_CAPSULE_ICON_REPLACEMENT_ENABLED ||
+            key == KEY_AOD_ICON_REPLACEMENT_ENABLED ||
             key.startsWith(KEY_RULE_ENABLED_PREFIX) ||
             key.startsWith(KEY_RULE_ENABLED_ALL_PREFIX) ||
             key.startsWith(KEY_RULE_ICON_SOURCE_PREFIX) ||

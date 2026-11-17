@@ -73,8 +73,10 @@ class HomeActivity : ComponentActivity() {
                     onRulesEnabledChange = ::setRulesEnabled,
                     onIconSourceModeChange = ::setIconSourceMode,
                     onPanelIconReplacementEnabledChange = ::setPanelIconReplacementEnabled,
+                    onMediaNotificationIconEnabledChange = ::setMediaNotificationIconEnabled,
                     onLockScreenCapsuleIconReplacementEnabledChange =
                         ::setLockScreenCapsuleIconReplacementEnabled,
+                    onAodIconReplacementEnabledChange = ::setAodIconReplacementEnabled,
                     onOplusPushSpecialHandlingEnabledChange = ::setOplusPushSpecialHandlingEnabled,
                     onPlaceholderIconEnabledChange = ::setPlaceholderIconEnabled,
                     onLauncherIconHiddenChange = ::setLauncherIconHidden,
@@ -153,6 +155,11 @@ class HomeActivity : ComponentActivity() {
         updateConfig(service, onShowMessage) { RuleStore.setPanelIconReplacementEnabled(enabled) }
     }
 
+    private fun setMediaNotificationIconEnabled(enabled: Boolean, onShowMessage: (String) -> Unit) {
+        val service = requireFrameworkService(onShowMessage) ?: return
+        updateConfig(service, onShowMessage) { RuleStore.setMediaNotificationIconEnabled(enabled) }
+    }
+
     private fun setLockScreenCapsuleIconReplacementEnabled(
         enabled: Boolean,
         onShowMessage: (String) -> Unit,
@@ -161,6 +168,11 @@ class HomeActivity : ComponentActivity() {
         updateConfig(service, onShowMessage) {
             RuleStore.setLockScreenCapsuleIconReplacementEnabled(enabled)
         }
+    }
+
+    private fun setAodIconReplacementEnabled(enabled: Boolean, onShowMessage: (String) -> Unit) {
+        val service = requireFrameworkService(onShowMessage) ?: return
+        updateConfig(service, onShowMessage) { RuleStore.setAodIconReplacementEnabled(enabled) }
     }
 
     private fun setOplusPushSpecialHandlingEnabled(enabled: Boolean, onShowMessage: (String) -> Unit) {
