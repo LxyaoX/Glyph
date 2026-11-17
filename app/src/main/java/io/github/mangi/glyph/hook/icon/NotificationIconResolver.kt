@@ -8,6 +8,7 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.Icon
 import android.service.notification.StatusBarNotification
 import androidx.core.graphics.drawable.toDrawable
+import io.github.mangi.glyph.core.ColorOsVersion
 import io.github.mangi.glyph.diagnostics.Diagnostics
 import io.github.mangi.glyph.hook.runtimeFailure
 import io.github.mangi.glyph.rules.IconRule
@@ -210,6 +211,8 @@ internal class NotificationIconResolver(
 
     private val Context.defaultPanelIconTint: Int
         get() {
+            // ColorOS 17 的通知面板是液态玻璃背景，浅色模式下的深灰图标会糊进背景，沿用夜间色调。
+            if (ColorOsVersion.isAtLeast17) return DARK_PANEL_ICON_TINT
             val nightMode = resources.configuration.uiMode and Configuration.UI_MODE_NIGHT_MASK
             return if (nightMode == Configuration.UI_MODE_NIGHT_YES) {
                 DARK_PANEL_ICON_TINT
