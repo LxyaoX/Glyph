@@ -32,6 +32,11 @@ android {
         targetSdk = gropify.project.android.targetSdk
         versionName = gropify.project.app.versionName
         versionCode = gropify.project.app.versionCode
+        // 其余架构不运行 SystemUI Hook，打进包里只会增大体积。
+        ndk {
+            abiFilters.clear()
+            abiFilters += "arm64-v8a"
+        }
     }
     buildTypes {
         release {
@@ -67,7 +72,7 @@ androidComponents {
         variant.outputs.forEach { output ->
             output.outputFileName.set(
                 output.versionName.map { versionName ->
-                    "Glyph-$versionName.apk"
+                    "Glyph-$versionName-arm64-v8a.apk"
                 }
             )
         }

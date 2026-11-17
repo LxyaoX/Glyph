@@ -94,6 +94,8 @@ Oplus Push 代表目标应用生成的位图不等同于应用原生 `smallIcon`
 
 优先跟进 ColorOS 17 的系统变更和问题修复，保留 ColorOS 16 / realme UI 7.0 的现有适配。不兼容旧版 Xposed 或其他框架。
 
+安装包只提供 **arm64-v8a**，最低支持 **Android 15（API 35）**，目标 **Android 17（API 37）**。
+
 ## 规则来源
 
 沿用 [Android Notification Icon Project (ANIP)](https://github.com/BetterAndroid/android-notification-icon-project) 规则仓库：
