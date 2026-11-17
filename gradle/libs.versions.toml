@@ -13,7 +13,7 @@ activity-compose = "1.13.0"
 androidx-navigationevent = "1.1.2"
 miuix = "0.9.4"
 junit = "4.13.2"
-hiddenapibypass = "6.1"
+hiddenapibypass = "6.2"
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
