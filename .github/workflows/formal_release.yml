@@ -18,7 +18,7 @@ permissions:
 jobs:
   build:
     name: Build Production-Signed APK
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-26.04
     environment: release
     steps:
       - name: Verify release source
@@ -35,6 +35,26 @@ jobs:
           distribution: temurin
           cache: gradle
 
+      - name: Check signing secrets
+        id: signing
+        shell: bash
+        env:
+          RELEASE_KEYSTORE_BASE64: ${{ secrets.RELEASE_KEYSTORE_BASE64 }}
+          RELEASE_STORE_PASSWORD: ${{ secrets.RELEASE_STORE_PASSWORD }}
+          RELEASE_KEY_ALIAS: ${{ secrets.RELEASE_KEY_ALIAS }}
+          RELEASE_KEY_PASSWORD: ${{ secrets.RELEASE_KEY_PASSWORD }}
+        run: |
+          missing=
+          for name in RELEASE_KEYSTORE_BASE64 RELEASE_STORE_PASSWORD RELEASE_KEY_ALIAS RELEASE_KEY_PASSWORD; do
+            [ -n "${!name}" ] || missing="$missing $name"
+          done
+          if [ -z "$missing" ]; then
+            echo "available=true" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          echo "available=false" >> "$GITHUB_OUTPUT"
+          echo "::notice::发布签名密钥缺失:$missing，本次只产出未签名的 release APK"
+
       - name: Lint and build unsigned release
         env:
           GLYPH_FORMAL_RELEASE: 'true'
@@ -42,6 +62,7 @@ jobs:
 
       - name: Sign and verify formal release
         id: release
+        if: steps.signing.outputs.available == 'true'
         shell: bash
         env:
           RELEASE_STORE_PASSWORD: ${{ secrets.RELEASE_STORE_PASSWORD }}
@@ -101,10 +122,35 @@ jobs:
           echo "apk_path=$release_target" >> "$GITHUB_OUTPUT"
           echo "artifact_dir=$artifact_dir" >> "$GITHUB_OUTPUT"
 
+      - name: Collect unsigned release
+        id: unsigned
+        if: steps.signing.outputs.available != 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          version_name=$(sed -nE 's/^project\.app\.versionName="?([^"[:space:]]+)"?$/\1/p' gradle.properties)
+          test -n "$version_name"
+          source_apk=$(find app/build/outputs/apk/release -maxdepth 1 -type f -name "Glyph-${version_name}.apk" -print -quit)
+          test -n "$source_apk"
+          artifact_dir="${RUNNER_TEMP}/release-artifact"
+          mkdir -p "$artifact_dir"
+          cp "$source_apk" "$artifact_dir/Glyph-${version_name}-unsigned.apk"
+          echo "artifact_dir=$artifact_dir" >> "$GITHUB_OUTPUT"
+
       - name: Upload production-signed artifact
+        if: steps.signing.outputs.available == 'true'
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: Glyph-release-apk
           path: ${{ steps.release.outputs.artifact_dir }}
+          if-no-files-found: error
+          retention-days: 14
+
+      - name: Upload unsigned artifact
+        if: steps.signing.outputs.available != 'true'
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
+        with:
+          name: Glyph-release-unsigned
+          path: ${{ steps.unsigned.outputs.artifact_dir }}
           if-no-files-found: error
           retention-days: 14
