@@ -28,6 +28,9 @@ Hook 层采用原作者 [fankes](https://github.com/fankes) 开发的 [YukiHook]
 | 启用图标增强 | 总开关。关闭后不再使用规则或主题图标，只保留符合通知规范的原始 `smallIcon` 保护 |
 | 图标来源 | 在规则图标和桌面主题之间二选一。桌面主题模式下，通知图标跟随桌面当前主题或自定义图标 |
 | 通知中心图标替换 | 控制通知面板内的小图标。关闭后通知中心保持 ColorOS 默认行为，不影响状态栏 |
+| 媒体通知图标 | 通知中心里的媒体通知是否同样替换图标。默认关闭，媒体面板的图标重绑定开销最大 |
+| 锁屏岛图标优化 | 控制锁屏底部通知胶囊的图标。关闭后锁屏岛保持 ColorOS 默认行为 |
+| 息屏时钟图标 | 控制息屏（AOD）时钟通知的图标。关闭后 AOD 保持 ColorOS 原生图标 |
 | 系统推送特判 | 规则图标模式下，Oplus Push 通知是否优先使用目标应用的已启用规则。关闭后保持系统默认 |
 | 未适配占位符 | 规则图标模式下，未命中规则且原始图标不是可着色的通知遮罩时，使用通用圆形通知图标替代 |
 | 隐藏桌面图标 | 隐藏 Glyph 的桌面入口，不影响从 LSPosed 模块列表打开 |
@@ -112,6 +115,30 @@ Oplus Push 代表目标应用生成的位图不等同于应用原生 `smallIcon`
 - 支持通知图标跟随桌面当前主题或自定义图标：可在规则图标与桌面主题之间切换。
 
 原版项目以原作者维护计划为准。
+
+## 上游同步
+
+本分支的 Hook 层是重写实现，与原版不共用文件，因此上游更新按功能逐项对齐，不做整文件合并。
+
+最近一次对齐：`fankes/ColorOSNotifyIcon` @ `dc52636`，范围为分叉点 `d2299c4` 之后的 125 个提交。
+
+| 上游提交 | 内容 | 本分支对应实现 |
+| --- | --- | --- |
+| `7668d76` | ColorOS 17 浅色模式沿用夜间图标色 | `ColorOsVersion`、`NotificationIconResolver.defaultPanelIconTint` |
+| `d7af85f` | 媒体通知图标可替换 | 设置项「媒体通知图标」、`NotificationIconPolicy.shouldProcessPanel` |
+| `d326cd0` | AOD 图标替换可单独关闭 | 设置项「息屏时钟图标」、`AodNotificationHooks.resolveReplacementIcon` |
+
+以下行为在 Glyph 重写时已独立实现，本次不需再改：
+
+- 通知刷新入口：直接以 `ViewConfigCoordinator.attach` 取实例，调用 `updateNotificationsOnDensityOrFontScaleChanged`。
+- 通知头部二次着色拦截：`NotificationPanelHooks.installOplusHeaderColorGuard`。
+- 折叠分组摘要图标：`PanelIconTarget.OplusGroupSummary`。
+- 图标尺寸与灰度采样：`IconRenderSizing`、`NotificationIconMaskClassifier`，采样上限 64×64。
+
+未对齐的上游改动：
+
+- 原版 XML 界面重写（`activity_main` 拆分、`page_*` 布局、`AppViewInflater`、下拉菜单与主题样式等），与 Glyph 的 Compose + Miuix 界面不同源。
+- 流体云（`com.heytap.mcs`）图标替换，需要新增独立进程作用域，暂未实现。
 
 使用 Glyph 遇到的问题，请在[本仓库 Issues](https://github.com/Mangi-11/Glyph/issues) 反馈，请勿将本分支的问题提交到原作者的项目或要求原作者处理。
 
