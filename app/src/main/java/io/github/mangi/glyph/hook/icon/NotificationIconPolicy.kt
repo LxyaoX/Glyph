@@ -9,6 +9,7 @@ internal data class IconPolicyConfig(
     val rulesEnabled: Boolean,
     val source: PolicyIconSource,
     val panelEnabled: Boolean,
+    val mediaNotificationEnabled: Boolean,
     val handleOplusPush: Boolean,
     val placeholderEnabled: Boolean,
 )
@@ -42,7 +43,7 @@ internal object NotificationIconPolicy {
         isOplusPush: Boolean,
     ): Boolean =
         config.panelEnabled &&
-            !isMediaNotification &&
+            (config.mediaNotificationEnabled || !isMediaNotification) &&
             !shouldKeepHostDefault(config, isOplusPush)
 
     fun shouldResolveTheme(config: IconPolicyConfig): Boolean =

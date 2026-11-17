@@ -30,6 +30,7 @@ fun GlyphRoot(
     onRulesEnabledChange: (Boolean, (String) -> Unit) -> Unit,
     onIconSourceModeChange: (RuleStore.IconSourceMode, (String) -> Unit) -> Unit,
     onPanelIconReplacementEnabledChange: (Boolean, (String) -> Unit) -> Unit,
+    onMediaNotificationIconEnabledChange: (Boolean, (String) -> Unit) -> Unit,
     onLockScreenCapsuleIconReplacementEnabledChange: (Boolean, (String) -> Unit) -> Unit,
     onOplusPushSpecialHandlingEnabledChange: (Boolean, (String) -> Unit) -> Unit,
     onPlaceholderIconEnabledChange: (Boolean, (String) -> Unit) -> Unit,
@@ -91,6 +92,9 @@ fun GlyphRoot(
                     onIconSourceModeChange = { onIconSourceModeChange(it, ::showSnackbar) },
                     onPanelIconReplacementEnabledChange = {
                         onPanelIconReplacementEnabledChange(it, ::showSnackbar)
+                    },
+                    onMediaNotificationIconEnabledChange = {
+                        onMediaNotificationIconEnabledChange(it, ::showSnackbar)
                     },
                     onLockScreenCapsuleIconReplacementEnabledChange = {
                         onLockScreenCapsuleIconReplacementEnabledChange(it, ::showSnackbar)

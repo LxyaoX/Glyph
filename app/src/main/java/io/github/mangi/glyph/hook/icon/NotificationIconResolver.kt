@@ -274,6 +274,7 @@ internal class NotificationIconResolver(
             RuleStore.IconSourceMode.DesktopTheme -> PolicyIconSource.DesktopTheme
         },
         panelEnabled = panelIconReplacementEnabled,
+        mediaNotificationEnabled = mediaNotificationIconEnabled,
         handleOplusPush = oplusPushSpecialHandlingEnabled,
         placeholderEnabled = placeholderIconEnabled,
     )

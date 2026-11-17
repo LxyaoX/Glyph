@@ -61,6 +61,7 @@ fun AboutScreen(
     onRulesEnabledChange: (Boolean) -> Unit,
     onIconSourceModeChange: (RuleStore.IconSourceMode) -> Unit,
     onPanelIconReplacementEnabledChange: (Boolean) -> Unit,
+    onMediaNotificationIconEnabledChange: (Boolean) -> Unit,
     onLockScreenCapsuleIconReplacementEnabledChange: (Boolean) -> Unit,
     onOplusPushSpecialHandlingEnabledChange: (Boolean) -> Unit,
     onPlaceholderIconEnabledChange: (Boolean) -> Unit,
@@ -88,6 +89,7 @@ fun AboutScreen(
                 onRulesEnabledChange = onRulesEnabledChange,
                 onIconSourceModeChange = onIconSourceModeChange,
                 onPanelIconReplacementEnabledChange = onPanelIconReplacementEnabledChange,
+                onMediaNotificationIconEnabledChange = onMediaNotificationIconEnabledChange,
                 onLockScreenCapsuleIconReplacementEnabledChange =
                     onLockScreenCapsuleIconReplacementEnabledChange,
                 onOplusPushSpecialHandlingEnabledChange = onOplusPushSpecialHandlingEnabledChange,
@@ -122,6 +124,7 @@ private fun SettingsMainScreen(
     onRulesEnabledChange: (Boolean) -> Unit,
     onIconSourceModeChange: (RuleStore.IconSourceMode) -> Unit,
     onPanelIconReplacementEnabledChange: (Boolean) -> Unit,
+    onMediaNotificationIconEnabledChange: (Boolean) -> Unit,
     onLockScreenCapsuleIconReplacementEnabledChange: (Boolean) -> Unit,
     onOplusPushSpecialHandlingEnabledChange: (Boolean) -> Unit,
     onPlaceholderIconEnabledChange: (Boolean) -> Unit,
@@ -168,6 +171,7 @@ private fun SettingsMainScreen(
                             onIconSourceModeChange = onIconSourceModeChange,
                             onRulesEnabledChange = onRulesEnabledChange,
                             onPanelIconReplacementEnabledChange = onPanelIconReplacementEnabledChange,
+                            onMediaNotificationIconEnabledChange = onMediaNotificationIconEnabledChange,
                             onLockScreenCapsuleIconReplacementEnabledChange =
                                 onLockScreenCapsuleIconReplacementEnabledChange,
                             onOplusPushSpecialHandlingEnabledChange = onOplusPushSpecialHandlingEnabledChange,
