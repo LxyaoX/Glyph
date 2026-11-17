@@ -29,6 +29,7 @@ object RuleStore {
         val oplusPushSpecialHandlingEnabled: Boolean = true,
         val placeholderIconEnabled: Boolean = false,
         val lockScreenCapsuleIconReplacementEnabled: Boolean = true,
+        val aodIconReplacementEnabled: Boolean = true,
     )
 
     data class MirrorSnapshot(
@@ -75,6 +76,7 @@ object RuleStore {
     const val KEY_PLACEHOLDER_ICON_ENABLED = "config.placeholder_icon_enabled"
     const val KEY_LOCK_SCREEN_CAPSULE_ICON_REPLACEMENT_ENABLED =
         "config.lock_screen_capsule_icon_replacement_enabled"
+    const val KEY_AOD_ICON_REPLACEMENT_ENABLED = "config.aod_icon_replacement_enabled"
 
     /** Previous releases used a wall-clock timestamp as a revision. Read for migration only. */
     const val KEY_CONFIG_UPDATED_AT = "config_updated_at"
@@ -309,6 +311,10 @@ object RuleStore {
         putBoolean(KEY_LOCK_SCREEN_CAPSULE_ICON_REPLACEMENT_ENABLED, enabled)
     }
 
+    fun setAodIconReplacementEnabled(enabled: Boolean) = editConfig {
+        putBoolean(KEY_AOD_ICON_REPLACEMENT_ENABLED, enabled)
+    }
+
     fun setRuleEnabled(packageName: String, enabled: Boolean) = editConfig {
         putBoolean(ruleEnabledKey(packageName), enabled)
     }
@@ -397,6 +403,7 @@ object RuleStore {
             KEY_LOCK_SCREEN_CAPSULE_ICON_REPLACEMENT_ENABLED,
             true,
         ),
+        aodIconReplacementEnabled = values.boolean(KEY_AOD_ICON_REPLACEMENT_ENABLED, true),
     )
 
     fun applyRuleOverrides(
@@ -711,6 +718,7 @@ object RuleStore {
             key == KEY_OPLUS_PUSH_SPECIAL_HANDLING_ENABLED ||
             key == KEY_PLACEHOLDER_ICON_ENABLED ||
             key == KEY_LOCK_SCREEN_CAPSULE_ICON_REPLACEMENT_ENABLED ||
+            key == KEY_AOD_ICON_REPLACEMENT_ENABLED ||
             key.startsWith(KEY_RULE_ENABLED_PREFIX) ||
             key.startsWith(KEY_RULE_ENABLED_ALL_PREFIX) ||
             key.startsWith(KEY_RULE_ICON_SOURCE_PREFIX) ||

@@ -17,6 +17,7 @@ fun ModuleSettingsSection(
     onPanelIconReplacementEnabledChange: (Boolean) -> Unit,
     onMediaNotificationIconEnabledChange: (Boolean) -> Unit,
     onLockScreenCapsuleIconReplacementEnabledChange: (Boolean) -> Unit,
+    onAodIconReplacementEnabledChange: (Boolean) -> Unit,
     onOplusPushSpecialHandlingEnabledChange: (Boolean) -> Unit,
     onPlaceholderIconEnabledChange: (Boolean) -> Unit,
 ) {
@@ -46,6 +47,12 @@ fun ModuleSettingsSection(
         checked = state.config.lockScreenCapsuleIconReplacementEnabled,
         enabled = canEditConfig,
         onCheckedChange = onLockScreenCapsuleIconReplacementEnabledChange,
+    )
+    ToggleComponent(
+        title = stringResource(R.string.label_aod_icon_replacement_enabled),
+        checked = state.config.aodIconReplacementEnabled,
+        enabled = canEditConfig,
+        onCheckedChange = onAodIconReplacementEnabledChange,
     )
     if (ruleLibraryMode) {
         ToggleComponent(
